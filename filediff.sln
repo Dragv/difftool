@@ -5,6 +5,8 @@ VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "filediff", "filediff\filediff.csproj", "{500A533F-EB08-440A-A7A2-0ED79CA75BB2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "difftool.Tests", "difftool.Tests\difftool.Tests.csproj", "{DAAF8C2C-70EB-447E-922D-D86B39AF4A38}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{500A533F-EB08-440A-A7A2-0ED79CA75BB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{500A533F-EB08-440A-A7A2-0ED79CA75BB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{500A533F-EB08-440A-A7A2-0ED79CA75BB2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DAAF8C2C-70EB-447E-922D-D86B39AF4A38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DAAF8C2C-70EB-447E-922D-D86B39AF4A38}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DAAF8C2C-70EB-447E-922D-D86B39AF4A38}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DAAF8C2C-70EB-447E-922D-D86B39AF4A38}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
