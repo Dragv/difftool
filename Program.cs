@@ -1,17 +1,24 @@
 ﻿// See https://aka.ms/new-console-template for more information
 // TODO Add args validation
 
-//string baseFilePath = args[0];
-//string targetFilePath = args[1];
+string baseFilePath = args[0];
+string targetFilePath = args[1];
 
-string[] num1 = new string[] { "G", "A", "C" };
-string[] num2 = new string[] { "A", "G", "C", "A", "T" };
+string[] baseFileLines = File.ReadAllLines(baseFilePath);
+string[] targetFileLines = File.ReadAllLines(targetFilePath);
 
-DiffTool.ComputeLCS(num1, num2);
+//string[] num1 = new string[] { "G", "A", "C" };
+//string[] num2 = new string[] { "A", "G", "C", "A", "T" };
+
+//string[] num1 = new string[] { "X", "M", "J", "Y", "A", "U", "Z" };
+//string[] num2 = new string[] { "M", "Z", "J", "A", "W", "X", "U" };
+
+var matrix = DiffTool.ComputeLCS(baseFileLines, targetFileLines);
+DiffTool.Backtrack(matrix, baseFileLines, targetFileLines);
 
 public class DiffTool
 {
-    public static void ComputeLCS(string[] baseFileLines, string[] targetFileLines)
+    public static int[,] ComputeLCS(string[] baseFileLines, string[] targetFileLines)
     {
         int[,] matrix = new int[baseFileLines.Length + 1, targetFileLines.Length + 1];
 
@@ -30,12 +37,41 @@ public class DiffTool
             }
         }
 
-        for (int rowIndex = 0; rowIndex < matrix.GetLength(0); rowIndex++)
+        //for (int rowIndex = 0; rowIndex < matrix.GetLength(0); rowIndex++)
+        //{
+        //    Console.WriteLine("");
+        //    for (int columnIndex = 0; columnIndex < matrix.GetLength(1); columnIndex++)
+        //    {
+        //        Console.Write($"{matrix[rowIndex, columnIndex]},");
+        //    }
+        //}
+
+        return matrix;
+    }
+
+    public static void Backtrack(int[,] matrix, string[] baseFileLines, string[] targetFileLines)
+    {
+        int baseFileLineIndex = baseFileLines.Length;
+        int targetFileLineIndex = targetFileLines.Length;
+
+        while (baseFileLineIndex > 0 || targetFileLineIndex > 0)
         {
-            Console.WriteLine("");
-            for (int columnIndex = 0; columnIndex < matrix.GetLength(1); columnIndex++)
+            if (baseFileLineIndex - 1 >= 0 && targetFileLineIndex - 1 >= 0 && baseFileLines[baseFileLineIndex - 1] == targetFileLines[targetFileLineIndex - 1])
             {
-                Console.Write($"{matrix[rowIndex, columnIndex]},");
+                baseFileLineIndex--;
+                targetFileLineIndex--;
+                continue;
+            }
+
+            if (targetFileLineIndex - 1 < 0 || (baseFileLineIndex - 1 >= 0 && matrix[baseFileLineIndex - 1, targetFileLineIndex] >= matrix[baseFileLineIndex, targetFileLineIndex - 1]))
+            {
+                Console.WriteLine($"Missing {baseFileLines[baseFileLineIndex - 1]}");
+                baseFileLineIndex--;
+            }
+            else
+            {
+                Console.WriteLine($"Added {targetFileLines[targetFileLineIndex - 1]}");
+                targetFileLineIndex--;
             }
         }
     }
