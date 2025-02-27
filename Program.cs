@@ -129,16 +129,20 @@ public class DiffTool
         int deletedIndex = 0;
         int insertedIndex = 0;
 
+        int lineOffset = 0;
+
         for (int index = 0; index < maxLength; index++)
         {
-            if ((deletedIndex < deletedLines.Count && insertedIndex >= insertedLines.Count) || (deletedIndex < deletedLines.Count && deletedLines[deletedIndex].Item1 <= insertedLines[insertedIndex].Item1))
+            if ((deletedIndex < deletedLines.Count && insertedIndex >= insertedLines.Count) || (deletedIndex < deletedLines.Count && deletedLines[deletedIndex].Item1 + lineOffset <= insertedLines[insertedIndex].Item1))
             {
-                Console.WriteLine($"<<<< remove {deletedLines[deletedIndex].Item2 - deletedLines[deletedIndex].Item1} lines from line {deletedLines[deletedIndex].Item1 + 1}");
+                Console.WriteLine($"<<<< remove {deletedLines[deletedIndex].Item2 - deletedLines[deletedIndex].Item1} lines from line {deletedLines[deletedIndex].Item1 + 1 + lineOffset}");
+                lineOffset -= deletedLines[deletedIndex].Item2 - deletedLines[deletedIndex].Item1;
                 deletedIndex++;
             }
             else
             {
-                Console.WriteLine($">>>> insert {insertedLines[insertedIndex].Item2 - insertedLines[insertedIndex].Item1} lines at line {insertedLines[insertedIndex].Item1 + 1}");
+                Console.WriteLine($">>>> insert {insertedLines[insertedIndex].Item2 - insertedLines[insertedIndex].Item1} lines from line {insertedLines[insertedIndex].Item1 + 1}");
+                lineOffset += insertedLines[insertedIndex].Item2 - insertedLines[insertedIndex].Item1;
                 for (int linesIndex = insertedLines[insertedIndex].Item1; linesIndex < insertedLines[insertedIndex].Item2; linesIndex++)
                 {
                     Console.WriteLine(targetFileLines[linesIndex]);
