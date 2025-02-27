@@ -13,6 +13,7 @@ string[] targetFileLines = File.ReadAllLines(targetFilePath);
 //string[] num1 = new string[] { "X", "M", "J", "Y", "A", "U", "Z" };
 //string[] num2 = new string[] { "M", "Z", "J", "A", "W", "X", "U" };
 
+Console.WriteLine($"Comparing ${baseFilePath} agains ${targetFilePath}");
 var matrix = DiffTool.ComputeLCS(baseFileLines, targetFileLines);
 DiffTool.Backtrack(matrix, baseFileLines, targetFileLines);
 
