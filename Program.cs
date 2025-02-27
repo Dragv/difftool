@@ -110,17 +110,40 @@ public class DiffTool
         deletedLines.Reverse();
         insertedLines.Reverse();
 
-        foreach (var line in deletedLines)
-        {
-            Console.WriteLine($"<<<< remove {line.Item2 - line.Item1} lines from line {line.Item1 + 1}");
-        }
+        //foreach (var line in deletedLines)
+        //{
+        //    Console.WriteLine($"<<<< remove {line.Item2 - line.Item1} lines from line {line.Item1 + 1}");
+        //}
 
-        foreach (var line in insertedLines)
+        //foreach (var line in insertedLines)
+        //{
+        //    Console.WriteLine($">>>> insert {line.Item2 - line.Item1} lines from line {line.Item1 + 1}");
+        //    for (int index = line.Item1; index < line.Item2; index++)
+        //    {
+        //        Console.WriteLine(targetFileLines[index]);
+        //    }
+        //}
+
+        int maxLength = deletedLines.Count + insertedLines.Count;
+
+        int deletedIndex = 0;
+        int insertedIndex = 0;
+
+        for (int index = 0; index < maxLength; index++)
         {
-            Console.WriteLine($">>>> insert {line.Item2 - line.Item1} lines from line {line.Item1 + 1}");
-            for (int index = line.Item1; index < line.Item2; index++)
+            if ((deletedIndex < deletedLines.Count && insertedIndex >= insertedLines.Count) || (deletedIndex < deletedLines.Count && deletedLines[deletedIndex].Item1 <= insertedLines[insertedIndex].Item1))
             {
-                Console.WriteLine(targetFileLines[index]);
+                Console.WriteLine($"<<<< remove {deletedLines[deletedIndex].Item2 - deletedLines[deletedIndex].Item1} lines from line {deletedLines[deletedIndex].Item1 + 1}");
+                deletedIndex++;
+            }
+            else
+            {
+                Console.WriteLine($">>>> insert {insertedLines[insertedIndex].Item2 - insertedLines[insertedIndex].Item1} lines at line {insertedLines[insertedIndex].Item1 + 1}");
+                for (int linesIndex = insertedLines[insertedIndex].Item1; linesIndex < insertedLines[insertedIndex].Item2; linesIndex++)
+                {
+                    Console.WriteLine(targetFileLines[linesIndex]);
+                }
+                insertedIndex++;
             }
         }
     }
