@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "filediff": {
+      "commandName": "Project",
+      "commandLineArgs": "filediff1.cpp filediff2.cpp"
+    }
+  }
+}
