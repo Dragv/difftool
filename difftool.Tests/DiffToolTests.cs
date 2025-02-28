@@ -1,4 +1,4 @@
-using Microsoft.VisualStudio.TestPlatform.TestHost;
+using filediff;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 
