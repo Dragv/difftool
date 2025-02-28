@@ -1,21 +1,22 @@
-﻿// See https://aka.ms/new-console-template for more information
-// TODO Add args validation
+﻿// TODO Add args validation
 
-string baseFilePath = args[0];
-string targetFilePath = args[1];
+using System.Diagnostics;
 
-string[] baseFileLines = File.ReadAllLines(baseFilePath);
-string[] targetFileLines = File.ReadAllLines(targetFilePath);
+internal class Program
+{
+    private static void Main(string[] args)
+    {
+        string baseFilePath = args[0];
+        string targetFilePath = args[1];
 
-//string[] num1 = new string[] { "G", "A", "C" };
-//string[] num2 = new string[] { "A", "G", "C", "A", "T" };
+        string[] baseFileLines = File.ReadAllLines(baseFilePath);
+        string[] targetFileLines = File.ReadAllLines(targetFilePath);
 
-//string[] num1 = new string[] { "X", "M", "J", "Y", "A", "U", "Z" };
-//string[] num2 = new string[] { "M", "Z", "J", "A", "W", "X", "U" };
-
-Console.WriteLine($"Comparing ${baseFilePath} agains ${targetFilePath}");
-var matrix = DiffTool.ComputeLCS(baseFileLines, targetFileLines);
-DiffTool.Backtrack(matrix, baseFileLines, targetFileLines);
+        Console.WriteLine($"Comparing {baseFilePath} agains {targetFilePath}");
+        var matrix = DiffTool.ComputeLCS(baseFileLines, targetFileLines);
+        DiffTool.Backtrack(matrix, baseFileLines, targetFileLines);
+    }
+}
 
 public class DiffTool
 {
