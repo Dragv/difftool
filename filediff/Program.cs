@@ -39,16 +39,42 @@ public class DiffTool
             }
         }
 
-        //for (int rowIndex = 0; rowIndex < matrix.GetLength(0); rowIndex++)
-        //{
-        //    Console.WriteLine("");
-        //    for (int columnIndex = 0; columnIndex < matrix.GetLength(1); columnIndex++)
-        //    {
-        //        Console.Write($"{matrix[rowIndex, columnIndex]},");
-        //    }
-        //}
-
         return matrix;
+    }
+
+    public class LineChangeChunkList
+    {
+        private List<(int, int)> linesIndices = new List<(int, int)>();
+
+        private int currentChunkIndex = -1;
+
+        public void StartChunk(int endIndex)
+        {
+            if (currentChunkIndex < 0)
+            {
+                currentChunkIndex = endIndex;
+            }
+            endIndex--;
+            if (endIndex <= 0)
+            {
+                TryCloseChunk(endIndex);
+            }
+        }
+
+        public void TryCloseChunk(int startIndex)
+        {
+            if (currentChunkIndex > -1)
+            {
+                linesIndices.Add((startIndex, currentChunkIndex));
+                currentChunkIndex = -1;
+            }
+        }
+
+        public List<(int, int)> GetResultingList()
+        {
+            linesIndices.Reverse();
+            return linesIndices;
+        }
     }
 
     public static void Backtrack(int[,] matrix, string[] baseFileLines, string[] targetFileLines)
@@ -56,27 +82,15 @@ public class DiffTool
         int baseFileLineIndex = baseFileLines.Length;
         int targetFileLineIndex = targetFileLines.Length;
 
-        List<(int, int)> deletedLines = new List<(int, int)> ();
-        List<(int, int)> insertedLines = new List<(int, int)> ();
-
-        int deletedBlockEndLine = -1;
-        int insertedBlockEndLine = -1;
+        LineChangeChunkList deletedChunkList = new LineChangeChunkList();
+        LineChangeChunkList insertedChunkList = new LineChangeChunkList();
 
         while (baseFileLineIndex > 0 || targetFileLineIndex > 0)
         {
             if (baseFileLineIndex - 1 >= 0 && targetFileLineIndex - 1 >= 0 && baseFileLines[baseFileLineIndex - 1] == targetFileLines[targetFileLineIndex - 1])
             {
-                if (deletedBlockEndLine > -1)
-                {
-                    deletedLines.Add((baseFileLineIndex, deletedBlockEndLine));
-                    deletedBlockEndLine = -1;
-                }
-
-                if (insertedBlockEndLine > -1)
-                {
-                    insertedLines.Add((targetFileLineIndex, insertedBlockEndLine));
-                    insertedBlockEndLine = -1;
-                }
+                deletedChunkList.TryCloseChunk(baseFileLineIndex);
+                insertedChunkList.TryCloseChunk(targetFileLineIndex);
 
                 baseFileLineIndex--;
                 targetFileLineIndex--;
@@ -85,46 +99,18 @@ public class DiffTool
 
             if (targetFileLineIndex - 1 < 0 || (baseFileLineIndex - 1 >= 0 && matrix[baseFileLineIndex - 1, targetFileLineIndex] >= matrix[baseFileLineIndex, targetFileLineIndex - 1]))
             {
-                if (deletedBlockEndLine < 0)
-                {
-                    deletedBlockEndLine = baseFileLineIndex;
-                }
+                deletedChunkList.StartChunk(baseFileLineIndex);
                 baseFileLineIndex--;
-                if (baseFileLineIndex <= 0)
-                {
-                    deletedLines.Add((baseFileLineIndex, deletedBlockEndLine));
-                }
             }
             else
             {
-                if (insertedBlockEndLine < 0)
-                {
-                    insertedBlockEndLine = targetFileLineIndex;
-                }
+                insertedChunkList.StartChunk(targetFileLineIndex);
                 targetFileLineIndex--;
-                if (targetFileLineIndex <= 0)
-                {
-                    insertedLines.Add((targetFileLineIndex, insertedBlockEndLine));
-                }
             }
         }
 
-        deletedLines.Reverse();
-        insertedLines.Reverse();
-
-        //foreach (var line in deletedLines)
-        //{
-        //    Console.WriteLine($"<<<< remove {line.Item2 - line.Item1} lines from line {line.Item1 + 1}");
-        //}
-
-        //foreach (var line in insertedLines)
-        //{
-        //    Console.WriteLine($">>>> insert {line.Item2 - line.Item1} lines from line {line.Item1 + 1}");
-        //    for (int index = line.Item1; index < line.Item2; index++)
-        //    {
-        //        Console.WriteLine(targetFileLines[index]);
-        //    }
-        //}
+        List<(int, int)> deletedLines = deletedChunkList.GetResultingList();
+        List<(int, int)> insertedLines = insertedChunkList.GetResultingList();
 
         int maxLength = deletedLines.Count + insertedLines.Count;
 
