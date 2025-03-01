@@ -1,6 +1,4 @@
-﻿// TODO Add args validation
-
-using System.Runtime.CompilerServices;
+﻿using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("difftool.Tests")]
 namespace filediff
@@ -11,6 +9,11 @@ namespace filediff
         {
             string baseFilePath = args[0];
             string targetFilePath = args[1];
+
+            if (!File.Exists(baseFilePath) || !File.Exists(targetFilePath))
+            {
+                Console.WriteLine($"Couldn't find one of the specified files to diff. Please check your file paths and try again.");
+            }
 
             string[] baseFileLines = File.ReadAllLines(baseFilePath);
             string[] targetFileLines = File.ReadAllLines(targetFilePath);
