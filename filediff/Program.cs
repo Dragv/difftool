@@ -5,12 +5,17 @@ namespace filediff
 {
     internal class Program
     {
+        private const string invalidArgumentsMsg = "Invalid arguments.";
+        private const string fileNotFoundMsg = "Couldn't find one of the specified files to diff. Please check your file paths and try again.";
+        private const string usageMsg = "usage: filediff.exe <path for base file> <path for target file>";
+
         private static void Main(string[] args)
         {
             // If the program doesnt receive exactly 2 arguments it means that the call is invalid so we early exit
             if (args.Length != 2)
             {
-                Console.WriteLine($"Invalid arguments.");
+                Console.WriteLine(invalidArgumentsMsg);
+                Console.WriteLine(usageMsg);
                 return;
             }
 
@@ -20,7 +25,8 @@ namespace filediff
             // If either of the files of the given paths dont exist we early exit
             if (!File.Exists(baseFilePath) || !File.Exists(targetFilePath))
             {
-                Console.WriteLine($"Couldn't find one of the specified files to diff. Please check your file paths and try again.");
+                Console.WriteLine(fileNotFoundMsg);
+                Console.WriteLine(usageMsg);
                 return;
             }
 

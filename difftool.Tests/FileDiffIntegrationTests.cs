@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace difftool.Tests
@@ -16,6 +17,7 @@ namespace difftool.Tests
 
         private const string expectedMissingFileOutput = "Couldn't find one of the specified files to diff. Please check your file paths and try again.";
         private const string expectedInvalidArgsOutput = "Invalid arguments.";
+        private const string usageMsg = "usage: filediff.exe <path for base file> <path for target file>";
 
         public string RunProgram(string args)
         {
@@ -73,46 +75,70 @@ namespace difftool.Tests
             }
         }
 
+        public string CleanConsoleOutput(string output)
+        {
+            string trimmedOutput = "";
+            foreach (var line in output.Split("\n"))
+            {
+                trimmedOutput += $"{line.Trim()}\n";
+            }
+
+            return trimmedOutput;
+        }
+
         [TestMethod]
         public void MissingOneArg()
         {
             string output = RunProgram($"{filediff1Path}");
-            Assert.AreEqual(output.Trim(), expectedInvalidArgsOutput);
+            output = CleanConsoleOutput(output);
+
+            Assert.AreEqual(output.Trim(), $"{expectedInvalidArgsOutput}\n{usageMsg}");
         }
 
         [TestMethod]
         public void MissingAllArgs()
         {
             string output = RunProgram("");
-            Assert.AreEqual(output.Trim(), expectedInvalidArgsOutput);
+            output = CleanConsoleOutput(output);
+
+            Assert.AreEqual(output.Trim(), $"{expectedInvalidArgsOutput}\n{usageMsg}");
+
         }
 
         [TestMethod]
         public void TooManyArgs()
         {
             string output = RunProgram($"{filediff1Path} {filediff2Path} {emptyFilePath}");
-            Assert.AreEqual(output.Trim(), expectedInvalidArgsOutput);
+            output = CleanConsoleOutput(output);
+
+            Assert.AreEqual(output.Trim(), $"{expectedInvalidArgsOutput}\n{usageMsg}");
         }
 
         [TestMethod]
         public void MissingFirstFile()
         {
             string output = RunProgram($"{missingFilePath} {filediff1Path}");
-            Assert.AreEqual(output.Trim(), expectedMissingFileOutput);
+            output = CleanConsoleOutput(output);
+
+            Assert.AreEqual(output.Trim(), $"{expectedMissingFileOutput}\n{usageMsg}");
         }
 
         [TestMethod]
         public void MissingSecondFile()
         {
             string output = RunProgram($"{filediff1Path} {missingFilePath}");
-            Assert.AreEqual(output.Trim(), expectedMissingFileOutput);
+            output = CleanConsoleOutput(output);
+
+            Assert.AreEqual(output.Trim(), $"{expectedMissingFileOutput}\n{usageMsg}");
         }
 
         [TestMethod]
         public void MissingBothFiles()
         {
             string output = RunProgram($"{missingFilePath} {missingFilePath}");
-            Assert.AreEqual(output.Trim(), expectedMissingFileOutput);
+            output = CleanConsoleOutput(output);
+
+            Assert.AreEqual(output.Trim(), $"{expectedMissingFileOutput}\n{usageMsg}");
         }
 
         [TestMethod]
