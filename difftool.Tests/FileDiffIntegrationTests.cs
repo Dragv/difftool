@@ -7,7 +7,6 @@ namespace difftool.Tests
     public class FileDiffIntegrationTests
     {
         // Integration Tests
-        // Missing args
 
         private const string appExePath = "..\\..\\..\\..\\filediff\\bin\\Debug\\net6.0\\filediff.exe";
         private const string filediff1Path = "..\\..\\..\\testFiles\\filediff1.cpp";
@@ -16,8 +15,9 @@ namespace difftool.Tests
         private const string missingFilePath = "..\\..\\..\\testFiles\\missing.cpp";
 
         private const string expectedMissingFileOutput = "Couldn't find one of the specified files to diff. Please check your file paths and try again.";
+        private const string expectedInvalidArgsOutput = "Invalid arguments.";
 
-        public string RunProgram(string baseFilePath, string targetFilePath)
+        public string RunProgram(string args)
         {
             ProcessStartInfo processStartInfo = new ProcessStartInfo();
             processStartInfo.FileName = appExePath;
@@ -26,7 +26,7 @@ namespace difftool.Tests
             processStartInfo.UseShellExecute = false;
             processStartInfo.RedirectStandardInput = true;
             processStartInfo.RedirectStandardOutput = true;
-            processStartInfo.Arguments = $"{baseFilePath} {targetFilePath}";
+            processStartInfo.Arguments = args;
 
             Process? process = Process.Start(processStartInfo);
             process?.WaitForExit();
@@ -36,7 +36,7 @@ namespace difftool.Tests
 
         public void BasicTest(string baseFilePath, string targetFilePath)
         {
-            string output = RunProgram(baseFilePath, targetFilePath);
+            string output = RunProgram($"{baseFilePath} {targetFilePath}");
 
             List<string> baseFileLines = File.ReadAllLines(baseFilePath).ToList();
             string[] targetFileLines = File.ReadAllLines(targetFilePath);
@@ -74,23 +74,44 @@ namespace difftool.Tests
         }
 
         [TestMethod]
+        public void MissingOneArg()
+        {
+            string output = RunProgram($"{filediff1Path}");
+            Assert.AreEqual(output.Trim(), expectedInvalidArgsOutput);
+        }
+
+        [TestMethod]
+        public void MissingAllArgs()
+        {
+            string output = RunProgram("");
+            Assert.AreEqual(output.Trim(), expectedInvalidArgsOutput);
+        }
+
+        [TestMethod]
+        public void TooManyArgs()
+        {
+            string output = RunProgram($"{filediff1Path} {filediff2Path} {emptyFilePath}");
+            Assert.AreEqual(output.Trim(), expectedInvalidArgsOutput);
+        }
+
+        [TestMethod]
         public void MissingFirstFile()
         {
-            string output = RunProgram(missingFilePath, filediff1Path);
+            string output = RunProgram($"{missingFilePath} {filediff1Path}");
             Assert.AreEqual(output.Trim(), expectedMissingFileOutput);
         }
 
         [TestMethod]
         public void MissingSecondFile()
         {
-            string output = RunProgram(filediff1Path, missingFilePath);
+            string output = RunProgram($"{filediff1Path} {missingFilePath}");
             Assert.AreEqual(output.Trim(), expectedMissingFileOutput);
         }
 
         [TestMethod]
         public void MissingBothFiles()
         {
-            string output = RunProgram(missingFilePath, missingFilePath);
+            string output = RunProgram($"{missingFilePath} {missingFilePath}");
             Assert.AreEqual(output.Trim(), expectedMissingFileOutput);
         }
 

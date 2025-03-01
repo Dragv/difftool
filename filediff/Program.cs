@@ -7,12 +7,21 @@ namespace filediff
     {
         private static void Main(string[] args)
         {
+            // If the program doesnt receive exactly 2 arguments it means that the call is invalid so we early exit
+            if (args.Length != 2)
+            {
+                Console.WriteLine($"Invalid arguments.");
+                return;
+            }
+
             string baseFilePath = args[0];
             string targetFilePath = args[1];
 
+            // If either of the files of the given paths dont exist we early exit
             if (!File.Exists(baseFilePath) || !File.Exists(targetFilePath))
             {
                 Console.WriteLine($"Couldn't find one of the specified files to diff. Please check your file paths and try again.");
+                return;
             }
 
             string[] baseFileLines = File.ReadAllLines(baseFilePath);
