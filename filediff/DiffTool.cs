@@ -24,7 +24,7 @@
             return matrix;
         }
 
-        public static void Backtrack(int[,] matrix, string[] baseFileLines, string[] targetFileLines)
+        public static void Backtrack(int[,] matrix, string[] baseFileLines, string[] targetFileLines, out List<(int, int)> deletedLines, out List<(int, int)> insertedLines)
         {
             int baseFileLineIndex = baseFileLines.Length;
             int targetFileLineIndex = targetFileLines.Length;
@@ -56,9 +56,12 @@
                 }
             }
 
-            List<(int, int)> deletedLines = deletedChunkList.GetResultingList();
-            List<(int, int)> insertedLines = insertedChunkList.GetResultingList();
+            deletedLines = deletedChunkList.GetResultingList();
+            insertedLines = insertedChunkList.GetResultingList();
+        }
 
+        public static void PrintDiff(List<(int, int)> deletedLines, List<(int, int)> insertedLines, string[] targetFileLines)
+        {
             int maxLength = deletedLines.Count + insertedLines.Count;
 
             int deletedIndex = 0;
