@@ -7,6 +7,10 @@ To run the tool open your command line on the folder containing the executable a
 .\filediff.exe .\filediff1.cpp .\filediff2.cpp
 ```
 
+### Sample Output
+![SampleOutput](https://github.com/user-attachments/assets/af350f8e-422e-42ce-af58-dec401d9be97)
+
+
 ## Troubleshooting
 This app requires .NET runtime v6. Verify that this is installed in your machine and in the case it isn't you can download it through this link: https://aka.ms/dotnet-core-applaunch?missing_runtime=true&arch=x64&rid=win10-x64&apphost_version=6.0.22
 
