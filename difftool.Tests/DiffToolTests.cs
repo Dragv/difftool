@@ -1,6 +1,4 @@
 using filediff;
-using System.Diagnostics;
-using System.Text.RegularExpressions;
 
 namespace difftool.Tests
 {

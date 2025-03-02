@@ -12,6 +12,8 @@ namespace difftool.Tests
         private const string appExePath = "..\\..\\..\\..\\filediff\\bin\\Debug\\net6.0\\filediff.exe";
         private const string filediff1Path = "..\\..\\..\\testFiles\\filediff1.cpp";
         private const string filediff2Path = "..\\..\\..\\testFiles\\filediff2.cpp";
+        private const string filediff3Path = "..\\..\\..\\testFiles\\filediff3.cpp";
+        private const string filediff4Path = "..\\..\\..\\testFiles\\filediff4.cpp";
         private const string emptyFilePath = "..\\..\\..\\testFiles\\empty.cpp";
         private const string missingFilePath = "..\\..\\..\\testFiles\\missing.cpp";
 
@@ -151,6 +153,18 @@ namespace difftool.Tests
         public void SharedDiff2ToDiff1Case()
         {
             BasicTest(filediff2Path, filediff1Path);
+        }
+
+        [TestMethod]
+        public void SharedDiff3ToDiff4Case()
+        {
+            BasicTest(filediff3Path, filediff4Path);
+        }
+
+        [TestMethod]
+        public void SharedDiff4ToDiff3Case()
+        {
+            BasicTest(filediff4Path, filediff3Path);
         }
 
         [TestMethod]

@@ -33,7 +33,7 @@ namespace filediff
             string[] baseFileLines = File.ReadAllLines(baseFilePath);
             string[] targetFileLines = File.ReadAllLines(targetFilePath);
 
-            Console.WriteLine($"Comparing {baseFilePath} agains {targetFilePath}");
+            Console.WriteLine($"Comparing {baseFilePath} against {targetFilePath}");
             int[,] matrix = DiffTool.ComputeLCS(baseFileLines, targetFileLines);
             DiffTool.Backtrack(matrix, baseFileLines, targetFileLines, out List<(int, int)> deletedLines, out List<(int, int)> insertedLines);
             DiffTool.PrintDiff(deletedLines, insertedLines, targetFileLines);
