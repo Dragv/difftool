@@ -91,12 +91,14 @@
                 // We print the first possible change in the lists of changed chunks
                 if ((deletedIndex < deletedLines.Count && insertedIndex >= insertedLines.Count) || (deletedIndex < deletedLines.Count && deletedLines[deletedIndex].Item1 + lineOffset <= insertedLines[insertedIndex].Item1))
                 {
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine($"<<<< remove {deletedLines[deletedIndex].Item2 - deletedLines[deletedIndex].Item1} lines from line {deletedLines[deletedIndex].Item1 + 1 + lineOffset}");
                     lineOffset -= deletedLines[deletedIndex].Item2 - deletedLines[deletedIndex].Item1;
                     deletedIndex++;
                 }
                 else
                 {
+                    Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine($">>>> insert {insertedLines[insertedIndex].Item2 - insertedLines[insertedIndex].Item1} lines from line {insertedLines[insertedIndex].Item1 + 1}");
                     lineOffset += insertedLines[insertedIndex].Item2 - insertedLines[insertedIndex].Item1;
                     for (int linesIndex = insertedLines[insertedIndex].Item1; linesIndex < insertedLines[insertedIndex].Item2; linesIndex++)
@@ -106,6 +108,8 @@
                     insertedIndex++;
                 }
             }
+
+            Console.ResetColor();
         }
     }
 }
