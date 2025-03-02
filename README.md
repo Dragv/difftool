@@ -4,11 +4,14 @@
 To run the tool open your command line on the folder containing the executable and pass in the two paths of the files you want to diff as arguments to the call
 ### Example
 ```
-filediff.exe filediff1.cpp filediff2.cpp
+.\filediff.exe .\filediff1.cpp .\filediff2.cpp
 ```
 
-## Setup
-Project requires the following to run
+## Troubleshooting
+This app requires .NET runtime v6. Verify that this is installed in your machine and in the case it isn't you can download it through this link: https://aka.ms/dotnet-core-applaunch?missing_runtime=true&arch=x64&rid=win10-x64&apphost_version=6.0.22
+
+## Stack for developing the console app
+Project requires the following to build
 - Visual Studio 2022
 - .NET 6
 
