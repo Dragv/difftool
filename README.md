@@ -9,6 +9,7 @@ To run the tool open your command line on the folder containing the executable a
 
 ### Sample Output
 ![SampleOutput](https://github.com/user-attachments/assets/af350f8e-422e-42ce-af58-dec401d9be97)
+![image](https://github.com/user-attachments/assets/8387e77f-884c-4510-890f-e0a7d946fce4)
 
 ### Test files
 Test files can be found under `difftool.Tests/testFiles` in this same repo.
